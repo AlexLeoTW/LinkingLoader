@@ -4,11 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import click.alexleo.linkingloader.utils.record.EndRecord;
-import click.alexleo.linkingloader.utils.record.HeadRecord;
-import click.alexleo.linkingloader.utils.record.ModifyRecord;
-import click.alexleo.linkingloader.utils.record.Record;
-import click.alexleo.linkingloader.utils.record.TextRecord;
+import click.alexleo.linkingloader.utils.ObjectRecord;
+import click.alexleo.linkingloader.utils.ObjectRecordType;
+import click.alexleo.linkingloader.utils.record.*;
 
 public class Reader {
     static final public String defaultPath = "./input.obj";
@@ -22,20 +20,20 @@ public class Reader {
 	openStream(filePath);
     }
     
-    public Record getLine() throws IOException {
+    public ObjectRecord getLine() throws Exception {
 	String line = fileStream.readLine();
 	
-	if (line.length() > 0) {
+	if (line != null && line.length() > 0) {
 	    char recordType = line.charAt(0);
 	    switch(recordType) {
 	    case 'H':
-		return new HeadRecord(line);
+		return new ObjectRecord(ObjectRecordType.HEADER, new HeadRecord(line));
 	    case 'T':
-		return new TextRecord(line);
+		return new ObjectRecord(ObjectRecordType.TEXT, new TextRecord(line));
 	    case 'E':
-		return new EndRecord(line);
+		return new ObjectRecord(ObjectRecordType.END, new EndRecord(line));
 	    case 'M':
-		return new ModifyRecord(line);
+		return new ObjectRecord(ObjectRecordType.MODIFY, new ModifyRecord(line));
 	    default:
 		return null;
 	    }

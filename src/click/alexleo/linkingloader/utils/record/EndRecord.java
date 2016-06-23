@@ -10,4 +10,22 @@ public class EndRecord implements Record {
     public EndRecord(String desc) {
 	this.firstExecuable = Integer.valueOf(desc.substring(1, 7));
     }
+
+    @Override
+    public boolean equals(Object compare) {
+	if((compare == null) || (compare.getClass() != this.getClass())) {
+	    return false;
+	}
+	
+	if (this == compare) {
+	    return true;
+	}
+	
+	if (this.firstExecuable != ((EndRecord)compare).firstExecuable) {
+	    System.out.println("Different startingAddress");
+	    return false;
+	}
+	
+	return true;
+    }
 }
